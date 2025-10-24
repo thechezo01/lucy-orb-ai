@@ -1,75 +1,69 @@
 import { useState } from "react";
 import ParticleOrb from "@/components/ParticleOrb";
 import { toast } from "sonner";
+import { Mic, MicOff, MessageSquare } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [isListening, setIsListening] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const userName = "Mike"; // This would be dynamic from user data
 
   const toggleListening = () => {
     setIsListening(!isListening);
-    toast(isListening ? "Lucy is now idle" : "Lucy is listening...", {
+    toast(isListening ? "Deactivated" : "Listening...", {
       description: isListening
-        ? "Click the orb to activate"
-        : "Speak now or click to deactivate",
+        ? "Tap the orb to activate"
+        : "Speak now",
     });
   };
 
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+    toast(isMuted ? "Unmuted" : "Muted");
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-space relative overflow-hidden">
-      {/* Ambient background effects */}
-      <div className="absolute inset-0 bg-gradient-orb opacity-30 animate-pulse-glow" />
-      <div className="absolute top-20 left-20 w-64 h-64 bg-glow-cyan/10 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-glow-purple/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-
+    <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-        {/* Header */}
-        <div className="text-center mb-12 space-y-4">
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary via-glow-blue to-secondary bg-clip-text text-transparent animate-float">
-            Lucy
+      <div className="relative z-10 flex flex-col items-center justify-between min-h-screen px-4 py-8">
+        {/* Header with greeting */}
+        <div className="text-center pt-12 space-y-2">
+          <h1 className="text-2xl md:text-3xl font-light text-foreground">
+            Hey <span className="font-normal">{userName}</span>
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground">
-            {isListening ? "I'm listening..." : "Your AI Voice Assistant"}
+          <p className="text-base md:text-lg text-muted-foreground font-light">
+            How can I <span className="text-primary">help you</span>?
           </p>
         </div>
 
-        {/* Particle Orb */}
-        <ParticleOrb isListening={isListening} onClick={toggleListening} />
-
-        {/* Status indicator */}
-        <div className="mt-12 text-center space-y-2">
-          <div className="flex items-center justify-center gap-2">
-            <div
-              className={`w-3 h-3 rounded-full transition-all duration-500 ${
-                isListening
-                  ? "bg-primary shadow-glow-cyan animate-pulse-glow"
-                  : "bg-secondary/50"
-              }`}
-            />
-            <span className="text-sm md:text-base text-foreground/80 font-medium">
-              {isListening ? "Active" : "Idle"}
-            </span>
-          </div>
-          <p className="text-xs md:text-sm text-muted-foreground max-w-md">
-            Click the orb to {isListening ? "deactivate" : "activate"} Lucy
-          </p>
+        {/* Particle Orb - centered */}
+        <div className="flex-1 flex items-center justify-center">
+          <ParticleOrb isListening={isListening} onClick={toggleListening} />
         </div>
 
-        {/* Info cards */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl w-full">
-          {[
-            { label: "Voice Recognition", icon: "🎤" },
-            { label: "AI Processing", icon: "🧠" },
-            { label: "Smart Response", icon: "✨" },
-          ].map((feature, index) => (
-            <div
-              key={index}
-              className="bg-card/50 backdrop-blur-sm border border-border rounded-lg p-4 text-center hover:border-primary/50 transition-all duration-300 hover:shadow-glow-cyan/20"
-            >
-              <div className="text-3xl mb-2">{feature.icon}</div>
-              <div className="text-sm text-foreground/80">{feature.label}</div>
-            </div>
-          ))}
+        {/* Bottom controls */}
+        <div className="pb-8 flex items-center gap-6">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleMute}
+            className="w-12 h-12 rounded-full hover:bg-muted/50 transition-colors"
+          >
+            {isMuted ? (
+              <MicOff className="w-5 h-5 text-muted-foreground" />
+            ) : (
+              <Mic className="w-5 h-5 text-foreground" />
+            )}
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="w-12 h-12 rounded-full hover:bg-muted/50 transition-colors"
+          >
+            <MessageSquare className="w-5 h-5 text-foreground" />
+          </Button>
         </div>
       </div>
     </div>
