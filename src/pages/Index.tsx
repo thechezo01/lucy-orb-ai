@@ -1,13 +1,16 @@
 import { useState } from "react";
 import ParticleOrb from "@/components/ParticleOrb";
 import { toast } from "sonner";
-import { Mic, MicOff, MessageSquare } from "lucide-react";
+import { Mic, MicOff, MessageSquare, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const Index = () => {
   const [isListening, setIsListening] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const userName = "Mike"; // This would be dynamic from user data
+  const [showChat, setShowChat] = useState(false);
+  const [message, setMessage] = useState("");
+  const userName = "Kev"; // This would be dynamic from user data
 
   const toggleListening = () => {
     setIsListening(!isListening);
@@ -23,6 +26,17 @@ const Index = () => {
     toast(isMuted ? "Unmuted" : "Muted");
   };
 
+  const toggleChat = () => {
+    setShowChat(!showChat);
+  };
+
+  const handleSendMessage = () => {
+    if (message.trim()) {
+      toast("Message sent", { description: message });
+      setMessage("");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Main content */}
@@ -32,7 +46,7 @@ const Index = () => {
           <h1 className="text-2xl md:text-3xl font-light text-foreground">
             Hey <span className="font-normal">{userName}</span>
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground font-light">
+          <p className="text-2xl md:text-3xl text-muted-foreground font-light">
             How can I <span className="text-primary">help you</span>?
           </p>
         </div>
@@ -60,12 +74,31 @@ const Index = () => {
           <Button
             variant="ghost"
             size="icon"
+            onClick={toggleChat}
             className="w-12 h-12 rounded-full hover:bg-muted/50 transition-colors"
           >
             <MessageSquare className="w-5 h-5 text-foreground" />
           </Button>
         </div>
       </div>
+
+      {/* Chat Input */}
+      {showChat && (
+        <div className="fixed bottom-0 left-0 right-0 z-20 bg-card border-t border-border p-4 animate-in slide-in-from-bottom">
+          <div className="max-w-2xl mx-auto flex gap-2">
+            <Input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              placeholder="Type your message..."
+              className="flex-1"
+            />
+            <Button onClick={handleSendMessage} size="icon">
+              <Send className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
