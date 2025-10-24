@@ -1,47 +1,45 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
-interface Particle {
-  id: number;
-  angle: number;
-  distance: number;
-  size: number;
-  speed: number;
-  opacity: number;
-}
-
 interface ParticleOrbProps {
   isListening: boolean;
   onClick: () => void;
 }
 
 const ParticleOrb = ({ isListening, onClick }: ParticleOrbProps) => {
-  const [particles, setParticles] = useState<Particle[]>([]);
   const [rotation, setRotation] = useState(0);
-
-  useEffect(() => {
-    // Generate circular particles
-    const particleCount = isListening ? 80 : 60;
-    const newParticles: Particle[] = Array.from({ length: particleCount }, (_, i) => ({
-      id: i,
-      angle: (360 / particleCount) * i,
-      distance: isListening ? 140 : 120,
-      size: Math.random() * 2 + 1,
-      speed: Math.random() * 0.5 + 0.3,
-      opacity: Math.random() * 0.6 + 0.4,
-    }));
-    setParticles(newParticles);
-  }, [isListening]);
 
   useEffect(() => {
     if (!isListening) return;
     
     const interval = setInterval(() => {
-      setRotation(prev => (prev + 0.5) % 360);
+      setRotation((prev) => (prev + 0.5) % 360);
     }, 16);
 
     return () => clearInterval(interval);
   }, [isListening]);
+
+  // Generate static particles
+  const particleCount = isListening ? 80 : 60;
+  const particles = Array.from({ length: particleCount }, (_, i) => ({
+    id: i,
+    angle: (360 / particleCount) * i,
+    distance: isListening ? 140 : 120,
+    size: Math.random() * 2 + 1,
+    opacity: Math.random() * 0.6 + 0.4,
+  }));
+
+  const fluffyParticles = Array.from({ length: 40 }, (_, i) => {
+    const angle = (360 / 40) * i;
+    const radians = (angle * Math.PI) / 180;
+    const distance = Math.random() * 30 + 30;
+    return {
+      id: i,
+      x: Math.cos(radians) * distance,
+      y: Math.sin(radians) * distance,
+      size: Math.random() * 8 + 4,
+    };
+  });
 
   return (
     <div className="relative flex items-center justify-center">
@@ -59,15 +57,15 @@ const ParticleOrb = ({ isListening, onClick }: ParticleOrbProps) => {
           <div
             className="relative w-full h-full"
             style={{
-              transform: isListening ? `rotate(${rotation}deg)` : 'rotate(0deg)',
-              transition: isListening ? 'none' : 'transform 0.7s ease-out',
+              transform: isListening ? `rotate(${rotation}deg)` : "rotate(0deg)",
+              transition: isListening ? "none" : "transform 0.7s ease-out",
             }}
           >
             {particles.map((particle) => {
               const radians = (particle.angle * Math.PI) / 180;
               const x = Math.cos(radians) * particle.distance;
               const y = Math.sin(radians) * particle.distance;
-              
+
               return (
                 <div
                   key={particle.id}
@@ -76,15 +74,15 @@ const ParticleOrb = ({ isListening, onClick }: ParticleOrbProps) => {
                     isListening ? "bg-primary" : "bg-foreground"
                   )}
                   style={{
-                    left: '50%',
-                    top: '50%',
+                    left: "50%",
+                    top: "50%",
                     width: `${particle.size}px`,
                     height: `${particle.size}px`,
                     transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
                     opacity: particle.opacity,
-                    boxShadow: isListening 
+                    boxShadow: isListening
                       ? `0 0 ${particle.size * 4}px hsl(var(--primary))`
-                      : 'none',
+                      : "none",
                   }}
                 />
               );
@@ -108,27 +106,19 @@ const ParticleOrb = ({ isListening, onClick }: ParticleOrbProps) => {
         {!isListening && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="relative w-40 h-40">
-              {Array.from({ length: 40 }).map((_, i) => {
-                const angle = (360 / 40) * i;
-                const radians = (angle * Math.PI) / 180;
-                const distance = Math.random() * 30 + 30;
-                const x = Math.cos(radians) * distance;
-                const y = Math.sin(radians) * distance;
-                
-                return (
-                  <div
-                    key={`fluffy-${i}`}
-                    className="absolute rounded-full bg-foreground/80 blur-sm"
-                    style={{
-                      left: '50%',
-                      top: '50%',
-                      width: `${Math.random() * 8 + 4}px`,
-                      height: `${Math.random() * 8 + 4}px`,
-                      transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-                    }}
-                  />
-                );
-              })}
+              {fluffyParticles.map((particle) => (
+                <div
+                  key={particle.id}
+                  className="absolute rounded-full bg-foreground/80 blur-sm"
+                  style={{
+                    left: "50%",
+                    top: "50%",
+                    width: `${particle.size}px`,
+                    height: `${particle.size}px`,
+                    transform: `translate(calc(-50% + ${particle.x}px), calc(-50% + ${particle.y}px))`,
+                  }}
+                />
+              ))}
             </div>
           </div>
         )}
