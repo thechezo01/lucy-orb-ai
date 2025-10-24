@@ -47,16 +47,19 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        glow: {
+          cyan: "hsl(var(--glow-cyan))",
+          purple: "hsl(var(--glow-purple))",
+          blue: "hsl(var(--glow-blue))",
         },
+      },
+      backgroundImage: {
+        'gradient-space': 'var(--gradient-space)',
+        'gradient-orb': 'var(--gradient-orb)',
+      },
+      boxShadow: {
+        'glow-cyan': 'var(--shadow-glow-cyan)',
+        'glow-purple': 'var(--shadow-glow-purple)',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -80,10 +83,39 @@ export default {
             height: "0",
           },
         },
+        "pulse-glow": {
+          "0%, 100%": {
+            opacity: "1",
+            transform: "scale(1)",
+          },
+          "50%": {
+            opacity: "0.8",
+            transform: "scale(1.05)",
+          },
+        },
+        "orbit": {
+          "0%": {
+            transform: "rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg)",
+          },
+          "100%": {
+            transform: "rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg)",
+          },
+        },
+        "float": {
+          "0%, 100%": {
+            transform: "translateY(0px)",
+          },
+          "50%": {
+            transform: "translateY(-20px)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "orbit": "orbit var(--orbit-duration, 10s) linear infinite",
+        "float": "float 6s ease-in-out infinite",
       },
     },
   },
