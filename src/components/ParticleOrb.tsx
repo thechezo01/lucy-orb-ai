@@ -140,7 +140,7 @@ const ParticleOrb = ({ isListening, onClick, className = "w-80 h-80", isProcessi
                 return (
                   <div
                     key={particle.id}
-                    className="absolute rounded-full bg-primary/40 blur-sm"
+                    className="absolute rounded-full bg-primary/60"
                     style={{
                       left: "50%",
                       top: "50%",
