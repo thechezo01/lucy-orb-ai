@@ -4,9 +4,11 @@ import { cn } from "@/lib/utils";
 interface ParticleOrbProps {
   isListening: boolean;
   onClick: () => void;
+  className?: string;
+  isProcessing?: boolean;
 }
 
-const ParticleOrb = ({ isListening, onClick }: ParticleOrbProps) => {
+const ParticleOrb = ({ isListening, onClick, className = "w-80 h-80", isProcessing = false }: ParticleOrbProps) => {
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
@@ -46,11 +48,14 @@ const ParticleOrb = ({ isListening, onClick }: ParticleOrbProps) => {
       <button
         onClick={onClick}
         className={cn(
-          "relative w-72 h-72 md:w-80 md:h-80 rounded-full",
+          "relative rounded-full",
+          className,
           "transition-all duration-700 cursor-pointer",
           "hover:scale-105 active:scale-95",
-          "focus:outline-none focus:ring-0"
+          "focus:outline-none focus:ring-0",
+          isProcessing && "animate-pulse"
         )}
+        aria-label={isListening ? "Stop listening" : "Start listening"}
       >
         {/* Particle ring */}
         <div className="absolute inset-0 flex items-center justify-center">
