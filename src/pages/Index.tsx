@@ -84,22 +84,14 @@ const Index = () => {
     }
   };
 
-  const orbSize = orientation === "landscape" 
-    ? "w-48 h-48 sm:w-56 sm:h-56" 
-    : "w-60 h-60 sm:w-72 sm:h-72 md:w-80 md:h-80";
+  const orbSize = "w-60 h-60 sm:w-72 sm:h-72 md:w-80 md:h-80";
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Main content */}
-      <div className={`relative z-10 min-h-screen px-4 ${
-        orientation === "landscape" 
-          ? "flex items-center justify-center gap-8 py-4"
-          : "flex flex-col items-center justify-between py-8"
-      }`}>
+      <div className="relative z-10 min-h-screen px-4 flex flex-col items-center justify-between py-8">
         {/* Header with greeting */}
-        <div className={`text-center space-y-2 transition-all duration-500 ${
-          orientation === "landscape" ? "flex-shrink-0 w-1/3" : "pt-12"
-        }`}>
+        <div className="text-center space-y-2 transition-all duration-500 pt-12">
           <h1 className="text-2xl md:text-3xl font-light text-foreground transition-opacity duration-300 animate-fade-in">
             {greeting}
           </h1>
@@ -109,9 +101,7 @@ const Index = () => {
         </div>
 
         {/* Particle Orb - centered */}
-        <div className={`flex items-center justify-center ${
-          orientation === "landscape" ? "flex-shrink-0" : "flex-1"
-        }`}>
+        <div className="flex items-center justify-center flex-1">
           <ParticleOrb 
             isListening={isListening} 
             onClick={toggleListening} 
@@ -121,9 +111,7 @@ const Index = () => {
         </div>
 
         {/* Bottom controls */}
-        <div className={`flex items-center gap-6 ${
-          orientation === "landscape" ? "flex-col flex-shrink-0" : "pb-8"
-        }`}>
+        <div className="flex items-center gap-6 pb-8">
           <Button
             variant="ghost"
             size="icon"

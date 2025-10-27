@@ -40,16 +40,16 @@ const ParticleOrb = ({ isListening, onClick, className = "w-80 h-80", isProcessi
     }));
   }, [isListening]);
 
-  // Standby floating particles - vertical stack
+  // Standby floating particles - more organic
   const floatingParticles = useMemo(() => 
     Array.from({ length: 60 }, (_, i) => {
-      const spacing = 8; // Vertical spacing between particles
-      const stackHeight = 60 * spacing;
-      const yPosition = (i * spacing) - (stackHeight / 2); // Center the stack
+      const angle = (360 / 60) * i + Math.random() * 10;
+      const radians = (angle * Math.PI) / 180;
+      const distance = Math.random() * 50 + 20;
       return {
         id: i,
-        x: (Math.random() - 0.5) * 20, // Small horizontal variance
-        y: yPosition,
+        x: Math.cos(radians) * distance,
+        y: Math.sin(radians) * distance,
         size: Math.random() * 6 + 2,
         floatSpeed: Math.random() * 0.3 + 0.2,
         floatRadius: Math.random() * 8 + 4,
